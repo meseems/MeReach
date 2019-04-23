@@ -1,10 +1,10 @@
 package com.meseems.mereach.networking;
 
-import rx.Observable;
+import io.reactivex.Single;
 
 /**
  * Created by nickmm on 8/23/16.
  */
 public interface ReachabilityService {
-    Observable<Boolean> isReachable(String serverUrl);
+    Single<Boolean> isReachable(String serverUrl);
 }

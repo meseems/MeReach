@@ -4,27 +4,26 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-import rx.Observable;
-import rx.Subscriber;
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
 
 /**
  * Created by nickmm on 8/23/16.
  */
 public class ReachabilityServiceDummyImpl implements ReachabilityService {
 
-    public Observable<Boolean> isReachable(final String serverUrl) {
+    public Single<Boolean> isReachable(final String serverUrl) {
 
         // Using Observable.create
         // https://github.com/ReactiveX/RxJava/wiki/Creating-Observables
-        return Observable.create(new Observable.OnSubscribe<Boolean>() {
-
+        return Single.create(new SingleOnSubscribe<Boolean>() {
             @Override
-            public void call(Subscriber<? super Boolean> subscriber) {
+            public void subscribe(SingleEmitter<Boolean> emitter) throws Exception {
                 // Method called when subscribed
 
                 // onNext could be called inside an asynchronous method too.
-                subscriber.onNext(checkReachability(serverUrl, 1000));
-                subscriber.onCompleted();
+                emitter.onSuccess(checkReachability(serverUrl, 1000));
             }
         });
     }

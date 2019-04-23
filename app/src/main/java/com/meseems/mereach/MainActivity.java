@@ -6,9 +6,9 @@ import android.widget.TextView;
 
 import com.meseems.mereach.networking.ReachabilityServiceDummyImpl;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dummyTextView = (TextView) findViewById(R.id.hello_world_textview);
+        dummyTextView = findViewById(R.id.hello_world_textview);
 
         new ReachabilityServiceDummyImpl()
                 /*
@@ -29,10 +29,9 @@ public class MainActivity extends AppCompatActivity {
                 .isReachable("www.google.com.br")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Boolean>() {
-
+                .subscribe(new Consumer<Boolean>() {
                     @Override
-                    public void call(Boolean isReachable) {
+                    public void accept(Boolean isReachable) throws Exception {
                         if(isReachable) {
                             dummyTextView.setText("Is reachable!");
                         } else {
